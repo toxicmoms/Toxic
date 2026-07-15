@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toksyczne Mamuśki — Klub Przepisów</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Space+Grotesk:wght@400;500;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --bg: #101d15;
+    --bg-alt: #16261b;
+    --card: #1e3324;
+    --card-border: #33502f;
+    --cream: #f1ead8;
+    --cream-dim: #b9b39e;
+    --gold: #c9a227;
+    --gold-bright: #e3c25a;
+    --toxic: #8fb84a;
+    --toxic-soft: #6c9a3d;
+    --rose: #d97fa0;
+    --rose-dim: #b96c88;
+    --ink: #0a120c;
+    --radius: 18px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(143,184,74,0.12), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(217,127,160,0.08), transparent 60%),
+      var(--bg);
+    color:var(--cream);
+    font-family:'Karla', sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    scrollbar-color:var(--card-border) var(--bg);
+    scrollbar-width:thin;
+  }
+
+  ::-webkit-scrollbar{
+    width:10px;
+    height:8px;
+  }
+  ::-webkit-scrollbar-track{
+    background:var(--bg);
+  }
+  ::-webkit-scrollbar-thumb{
+    background:var(--card-border);
+    border-radius:999px;
+    border:2px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover{
+    background:var(--gold);
+  }
+
+  a{color:inherit;}
+
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+
+  .eyebrow{
+    font-family:'Space Grotesk', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    font-size:0.72rem;
+    font-weight:500;
+    color:var(--toxic);
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(16,29,21,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(201,162,39,0.18);
+  }
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    row-gap:10px;
+    padding:16px 32px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.15rem;
+    letter-spacing:-0.01em;
+  }
+  .wordmark{
+    height:34px;
+    width:auto;
+    flex-shrink:0;
+  }
+  nav.main-nav{
+    display:flex;
+    gap:28px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.85rem;
+    letter-spacing:0.02em;
+  }
+  nav.main-nav a{
+    text-decoration:none;
+    color:var(--cream-dim);
+    transition:color .2s;
+  }
+  nav.main-nav a:hover{color:var(--gold-bright);}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.82rem;
+    letter-spacing:0.03em;
+    font-weight:500;
+    padding:11px 22px;
+    border-radius:999px;
+    border:1px solid transparent;
+    cursor:pointer;
+    text-decoration:none;
+    transition:transform .15s ease, background .2s, border-color .2s;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-gold{background:var(--gold); color:var(--ink);}
+  .btn-gold:hover{background:var(--gold-bright);}
+  .btn-ghost{background:transparent; color:var(--cream); border-color:rgba(241,234,216,0.28);}
+  .btn-ghost:hover{border-color:var(--gold-bright); color:var(--gold-bright);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:88px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:56px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 5vw, 4.1rem);
+    line-height:0.98;
+    color:var(--cream);
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--toxic);
+    font-weight:500;
+  }
+  .hero p.lede{
+    margin-top:22px;
+    font-size:1.08rem;
+    color:var(--cream-dim);
+    max-width:46ch;
+  }
+  .hero-actions{
+    margin-top:34px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .hero-note{
+    margin-top:20px;
+    font-size:0.8rem;
+    color:var(--cream-dim);
+    font-style:italic;
+    opacity:0.75;
+  }
+
+  .hero-art{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .jar-illustration{
+    width:100%;
+    max-width:340px;
+  }
+
+  /* ---------- Category shelf ---------- */
+  .shelf-section{
+    padding:20px 0 8px;
+  }
+  .shelf-title{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .shelf{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding:6px 2px 18px;
+    scrollbar-width:thin;
+  }
+  .jar-btn{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    color:var(--cream);
+    padding:12px 20px;
+    border-radius:999px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.85rem;
+    letter-spacing:0.02em;
+    cursor:pointer;
+    transition:all .2s ease;
+    white-space:nowrap;
+  }
+  .jar-btn .ic{font-size:1.05rem;}
+  .jar-btn:hover{border-color:var(--gold); color:var(--gold-bright);}
+  .jar-btn.active{
+    background:var(--toxic-soft);
+    border-color:var(--toxic-soft);
+    color:var(--ink);
+    font-weight:700;
+  }
+  .jar-btn-add{
+    background:transparent;
+    border-style:dashed;
+    color:var(--cream-dim);
+  }
+  .jar-btn-add:hover{
+    border-style:dashed;
+    border-color:var(--gold);
+    color:var(--gold-bright);
+  }
+
+  /* ---------- Recipe grid ---------- */
+  .recipes-section{padding:28px 0 90px;}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:26px;
+    margin-top:8px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    overflow:visible;
+    display:flex;
+    flex-direction:column;
+    transition:transform .25s ease, border-color .25s ease;
+    position:relative;
+    margin-top:36px;
+    padding:44px 24px 24px;
+    cursor:pointer;
+  }
+  .card:hover{transform:translateY(-4px); border-color:var(--gold);}
+  .card-stamp{
+    position:absolute;
+    top:-36px;
+    left:50%;
+    transform:translateX(-50%);
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    border:4px solid var(--bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.8rem;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+  }
+  .detail-media{
+    height:160px;
+    margin:-34px -36px 0;
+    border-radius:18px 18px 0 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:3.2rem;
+  }
+  .card-tag{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.68rem;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    color:var(--toxic);
+    text-align:center;
+  }
+  .card-body{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex:1;
+  }
+  .card h3{
+    font-size:1.22rem;
+    line-height:1.2;
+    color:var(--cream);
+    text-align:center;
+  }
+  .card p.desc{
+    font-size:0.9rem;
+    color:var(--cream-dim);
+    margin:0;
+    text-align:center;
+    flex:1;
+  }
+  .card-meta{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:12px;
+    margin-top:6px;
+    border-top:1px solid rgba(241,234,216,0.1);
+    font-size:0.78rem;
+    color:var(--cream-dim);
+    font-family:'Space Grotesk', sans-serif;
+  }
+  .sass-meter{display:flex; gap:3px;}
+  .drop{
+    width:9px;height:12px;
+    border-radius:50% 50% 50% 0;
+    transform:rotate(45deg);
+    background:rgba(241,234,216,0.18);
+  }
+  .drop.on{background:var(--rose);}
+
+  /* ---------- Section: Jak dołączyć ---------- */
+  .how{
+    padding:70px 0 90px;
+    border-top:1px solid rgba(201,162,39,0.15);
+  }
+  .how-inner{
+    max-width:640px;
+  }
+  .steps{list-style:none; margin:26px 0 0; padding:0; display:flex; flex-direction:column; gap:22px;}
+  .steps li{
+    display:flex; gap:16px;
+    align-items:flex-start;
+  }
+  .step-mark{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.3rem;
+    color:var(--gold-bright);
+    width:32px;
+    flex-shrink:0;
+  }
+  .steps h4{margin:0 0 4px; font-family:'Space Grotesk', sans-serif; font-size:0.95rem; letter-spacing:0.01em;}
+  .steps p{margin:0; color:var(--cream-dim); font-size:0.92rem;}
+
+  .quote-card{
+    background:var(--bg-alt);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:36px;
+  }
+  .quote-card blockquote{
+    margin:0;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.3rem;
+    color:var(--cream);
+    line-height:1.4;
+  }
+  .quote-card figcaption{
+    margin-top:16px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.8rem;
+    color:var(--cream-dim);
+    letter-spacing:0.02em;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid rgba(201,162,39,0.15);
+    padding:48px 0 40px;
+  }
+  .footer-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .footer-note{
+    max-width:44ch;
+    color:var(--cream-dim);
+    font-size:0.85rem;
+    font-style:italic;
+  }
+  .footer-links{
+    display:flex;
+    gap:24px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.82rem;
+    color:var(--cream-dim);
+  }
+  .footer-links a{text-decoration:none;}
+  .footer-links a:hover{color:var(--gold-bright);}
+  .copyright{
+    margin-top:30px;
+    font-size:0.76rem;
+    color:rgba(185,179,158,0.6);
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  .auth-area{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .auth-greeting{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px 12px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.84rem;
+  }
+  .auth-greeting .name{color:var(--gold-bright); font-weight:500;}
+  .auth-greeting button{
+    background:none;
+    border:none;
+    color:var(--cream-dim);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.82rem;
+    text-decoration:underline;
+    cursor:pointer;
+    padding:0;
+  }
+  .auth-greeting button:hover{color:var(--rose);}
+
+  .edit-btn{
+    background:none;
+    border:1px solid rgba(241,234,216,0.28);
+    color:var(--cream-dim);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.72rem;
+    letter-spacing:0.04em;
+    padding:5px 11px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:border-color .2s, color .2s;
+    align-self:center;
+  }
+  .edit-btn:hover{border-color:var(--gold); color:var(--gold-bright);}
+
+  .auth-tabs{
+    display:flex;
+    gap:6px;
+    margin:22px 0 24px;
+    background:var(--bg);
+    border:1px solid var(--card-border);
+    border-radius:999px;
+    padding:4px;
+  }
+  .auth-tab{
+    flex:1;
+    background:none;
+    border:none;
+    border-radius:999px;
+    padding:9px 12px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.8rem;
+    color:var(--cream-dim);
+    cursor:pointer;
+    transition:background .2s, color .2s;
+  }
+  .auth-tab.active{
+    background:var(--toxic-soft);
+    color:var(--ink);
+    font-weight:700;
+  }
+  .auth-error{
+    color:var(--rose);
+    font-size:0.82rem;
+    margin:-6px 0 12px;
+    min-height:1em;
+  }
+  .auth-hint{
+    color:var(--cream-dim);
+    font-size:0.78rem;
+    font-style:italic;
+    margin:-4px 0 16px;
+  }
+  .auth-hint code{
+    background:var(--bg);
+    padding:1px 6px;
+    border-radius:4px;
+    font-style:normal;
+  }
+  .link-btn{
+    background:none;
+    border:none;
+    color:var(--gold-bright);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.8rem;
+    text-decoration:underline;
+    cursor:pointer;
+    padding:0;
+    margin:-4px 0 16px;
+    display:block;
+  }
+  .link-btn:hover{color:var(--rose);}
+
+  .empty-state{
+    grid-column:1/-1;
+    text-align:center;
+    padding:60px 20px;
+    color:var(--cream-dim);
+    font-style:italic;
+  }
+
+  @media (max-width: 880px){
+    .header-inner nav.main-nav{display:none;}
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-art{order:-1; max-width:220px; margin:0 auto;}
+    .how-inner{max-width:none;}
+    .grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width: 600px){
+    .wrap{padding:0 20px;}
+    .header-inner{padding:12px 20px;}
+    .grid{grid-template-columns:1fr;}
+    .hero{padding:40px 0 32px;}
+    .btn{padding:10px 16px; font-size:0.78rem;}
+    .auth-greeting{font-size:0.78rem;}
+    .hero-actions{flex-direction:column; align-items:stretch;}
+    .hero-actions .btn{text-align:center; justify-content:center;}
+    .shelf-title{flex-direction:column; align-items:flex-start; gap:4px;}
+    .footer-inner{flex-direction:column;}
+    .modal{padding:26px 20px 22px; max-width:calc(100vw - 32px) !important;}
+    .field-row{grid-template-columns:1fr;}
+    .icon-picker button{width:38px; height:38px;}
+    .auth-tabs{font-size:0.75rem;}
+    .card{padding:40px 18px 20px;}
+    .detail-media{margin:-26px -20px 0;}
+  }
+
+  @media (max-width: 380px){
+    nav.main-nav{display:none;}
+    .wordmark{height:28px;}
+    .auth-greeting .name{display:block; width:100%;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(10,18,12,0.72);
+    backdrop-filter:blur(4px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    z-index:200;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--bg-alt);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    width:100%;
+    max-width:560px;
+    max-height:88vh;
+    overflow-y:auto;
+    padding:34px 36px 30px;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .modal-close{
+    position:absolute;
+    top:18px; right:18px;
+    background:none;
+    border:none;
+    color:var(--cream-dim);
+    font-size:1.3rem;
+    line-height:1;
+    cursor:pointer;
+    padding:4px;
+  }
+  .modal-close:hover{color:var(--gold-bright);}
+  .modal h3{
+    font-size:1.5rem;
+    margin-bottom:6px;
+  }
+  .modal .modal-sub{
+    color:var(--cream-dim);
+    font-size:0.9rem;
+    margin:0 0 26px;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    margin-bottom:18px;
+  }
+  .field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  label{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.76rem;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--toxic);
+  }
+  input[type=text], input[type=email], input[type=password], select, textarea{
+    background:var(--bg);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:11px 14px;
+    color:var(--cream);
+    font-family:'Karla', sans-serif;
+    font-size:0.95rem;
+    width:100%;
+  }
+  input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, select:focus, textarea:focus{
+    outline:none;
+    border-color:var(--gold);
+  }
+  input[type=text]:disabled, input[type=email]:disabled, input[type=password]:disabled{
+    color:var(--cream-dim);
+    opacity:0.85;
+    cursor:not-allowed;
+  }
+  textarea{resize:vertical; min-height:78px;}
+  .sass-picker{display:flex; gap:10px; align-items:center;}
+  .sass-picker button{
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:2px;
+  }
+  .sass-picker .drop{width:16px; height:20px;}
+
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+  .chip{
+    background:var(--bg);
+    border:1px solid var(--card-border);
+    color:var(--cream-dim);
+    font-family:'Karla', sans-serif;
+    font-size:0.8rem;
+    padding:6px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    text-align:left;
+    transition:border-color .2s, color .2s;
+  }
+  .chip:hover{border-color:var(--gold); color:var(--gold-bright);}
+
+  .icon-picker{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+  }
+  .icon-picker button{
+    width:42px;
+    height:42px;
+    font-size:1.2rem;
+    background:var(--bg);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    cursor:pointer;
+    transition:border-color .2s, transform .15s;
+  }
+  .icon-picker button:hover{transform:translateY(-1px); border-color:var(--gold);}
+  .icon-picker button.active{
+    border-color:var(--toxic);
+    background:rgba(143,184,74,0.15);
+  }
+  .icon-picker input{
+    width:68px;
+    height:42px;
+    text-align:center;
+    padding:0 6px;
+  }
+  .ingredient-row{
+    display:grid;
+    grid-template-columns:100px 1fr auto;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .ingredient-row input{
+    background:var(--bg);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:9px 12px;
+    color:var(--cream);
+    font-family:'Karla', sans-serif;
+    font-size:0.9rem;
+  }
+  .ingredient-row input:focus{
+    outline:none;
+    border-color:var(--gold);
+  }
+  .ingredient-remove{
+    background:none;
+    border:1px solid rgba(241,234,216,0.2);
+    color:var(--cream-dim);
+    border-radius:10px;
+    width:38px;
+    cursor:pointer;
+    font-size:1rem;
+    transition:border-color .2s, color .2s;
+  }
+  .ingredient-remove:hover{border-color:var(--rose); color:var(--rose);}
+  .instructions-view{
+    white-space:pre-line;
+    color:var(--cream-dim);
+    line-height:1.6;
+  }
+  .ingredients-view{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .ingredients-view li{
+    display:flex;
+    gap:10px;
+    font-size:0.92rem;
+    color:var(--cream-dim);
+  }
+  .ingredients-view .amount{
+    color:var(--gold-bright);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.8rem;
+    min-width:64px;
+    flex-shrink:0;
+  }
+  .detail-section-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--toxic);
+    margin:20px 0 10px;
+  }
+  .modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-top:8px;
+  }
+  .toast{
+    position:fixed;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--toxic-soft);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:500;
+    font-size:0.88rem;
+    padding:13px 24px;
+    border-radius:999px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:210;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <svg class="wordmark" viewBox="0 0 180 40" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="30" font-family="Fraunces" font-weight="700" font-size="28" fill="#f1ead8">T</text>
+        <g transform="translate(29,19)">
+          <circle r="10" fill="none" stroke="#c9a227" stroke-width="1.6"/>
+          <g stroke="#f1ead8" stroke-width="1.2" stroke-linecap="round" fill="none">
+            <circle cx="-3.6" cy="2" r="1.5"/>
+            <circle cx="0.8" cy="-3.4" r="2.2"/>
+            <circle cx="4.4" cy="1.4" r="1"/>
+            <circle cx="-1" cy="5" r="0.9"/>
+            <circle cx="3" cy="4.6" r="1.1"/>
+            <circle cx="-4.8" cy="-1.6" r="0.8"/>
+          </g>
+        </g>
+        <text x="40" y="30" font-family="Fraunces" font-weight="700" font-size="28" fill="#f1ead8">xic Moms</text>
+      </svg>
+    </div>
+    <nav class="main-nav">
+      <a href="#przepisy">Przepisy</a>
+      <a href="#kategorie">Kategorie</a>
+      <a href="#dolacz">O klubie</a>
+    </nav>
+    <div class="auth-area" id="authArea">
+      <button class="btn btn-ghost js-open-login">Dołącz do klubu</button>
+      <button class="btn btn-gold js-open-modal">Dodaj przepis</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero wrap">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">Klub przepisów dla niedoskonałych</p>
+      <h1>Gotujemy<br><em>trochę toksycznie,</em><br>ale ze smakiem</h1>
+      <p class="lede">Miejsce dla mam, które nie udają, że wszystko jest pod kontrolą. Przepisy sprawdzone w boju: szybkie, przyziemne i wystarczająco dobre, żeby nikt nie zapytał, co dzisiaj było na obiad — bo już wie.</p>
+      <div class="hero-actions">
+        <a href="#przepisy" class="btn btn-gold">Przeglądaj przepisy</a>
+        <button class="btn btn-ghost js-open-login">Dołącz do klubu</button>
+      </div>
+      <p class="hero-note">Żadna mamuśka nie ucierpiała przy tworzeniu tej strony. Prawdopodobnie.</p>
+    </div>
+    <div class="hero-art">
+      <svg class="jar-illustration" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="jarBody" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8fd44a"/>
+            <stop offset="100%" stop-color="#2f5a1e"/>
+          </linearGradient>
+          <radialGradient id="jarGlow" cx="50%" cy="55%" r="55%">
+            <stop offset="0%" stop-color="#8fd44a" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#8fd44a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="150" cy="210" rx="130" ry="130" fill="url(#jarGlow)"/>
+        <ellipse cx="150" cy="335" rx="55" ry="12" fill="#000" opacity="0.35"/>
+        <path d="M132 40 L132 90 Q80 140 80 220 Q80 300 150 300 Q220 300 220 220 Q220 140 168 90 L168 40 Z" fill="url(#jarBody)" stroke="#1e3324" stroke-width="3"/>
+        <rect x="128" y="18" width="44" height="24" rx="3" fill="#c9a227" stroke="#1e3324" stroke-width="2"/>
+        <path d="M128 90 L172 90" stroke="#1e3324" stroke-width="3"/>
+        <circle cx="120" cy="230" r="5" fill="#c8ff8a" opacity="0.65"/>
+        <circle cx="175" cy="250" r="4" fill="#c8ff8a" opacity="0.55"/>
+        <circle cx="150" cy="270" r="3.5" fill="#c8ff8a" opacity="0.5"/>
+        <rect x="98" y="165" width="104" height="70" rx="4" fill="#0d1a10" stroke="#8fd44a" stroke-width="2"/>
+        <g transform="translate(150,190)" stroke="#f1ead8" stroke-width="1.8" stroke-linecap="round" fill="none">
+          <circle cx="-10" cy="4" r="3.6"/>
+          <circle cx="2" cy="-6" r="5.5"/>
+          <circle cx="13" cy="2" r="2.8"/>
+          <circle cx="-3" cy="7" r="2.2"/>
+          <circle cx="10" cy="-4" r="2"/>
+          <circle cx="-13" cy="-3" r="1.8"/>
+        </g>
+        <text x="150" y="217" font-family="Space Grotesk" font-size="8.5" fill="#8fd44a" text-anchor="middle" letter-spacing="0.8">SKŁADNIK TAJNY</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="shelf-section wrap" id="kategorie">
+  <div class="shelf-title">
+    <h2 style="font-size:1.5rem;">Półka z kategoriami</h2>
+    <p class="eyebrow" style="color:var(--cream-dim); letter-spacing:0.1em;">kliknij słoik, żeby przefiltrować</p>
+  </div>
+  <div class="shelf" id="filterBar">
+    <button class="jar-btn active" data-filter="all"><span class="ic">⭐</span> Wszystkie</button>
+    <button class="jar-btn" data-filter="ziemniaki"><span class="ic">🥔</span> Ziemniaki</button>
+    <button class="jar-btn" data-filter="makarony"><span class="ic">🍝</span> Makarony</button>
+    <button class="jar-btn" data-filter="zupy"><span class="ic">🍲</span> Zupy</button>
+    <button class="jar-btn" data-filter="slodkosci"><span class="ic">🍰</span> Słodkości</button>
+    <button class="jar-btn" data-filter="szybkie"><span class="ic">⚡</span> Na szybko</button>
+    <button class="jar-btn" data-filter="wino"><span class="ic">🍷</span> Wino i przekąski</button>
+    <button class="jar-btn jar-btn-add" id="addCategoryBtn"><span class="ic">＋</span> Nowa kategoria</button>
+  </div>
+</section>
+
+<section class="recipes-section wrap" id="przepisy">
+  <div class="grid" id="recipeGrid"></div>
+</section>
+
+<section class="how wrap" id="dolacz">
+  <div class="how-inner">
+    <div>
+      <p class="eyebrow">O klubie</p>
+      <h2 style="font-size:2rem; margin-top:10px;">Zjednoczone jedną chorobą</h2>
+      <p style="color:var(--cream-dim); margin-top:16px; max-width:60ch;">Wszystko zaczęło się od jednej wspólnej diagnozy: macierzyństwa. Każda z nas przechodziła ciążę w innym terminie, ale objawy były identyczne — nagła miłość do spodni z gumką i talent do zasypiania na stojąco w kolejce do kasy. Dziś każda ma swojego bobasa, razem próbujemy jakoś przetrwać w naszej nowej rzeczywistości, a od czasu do czasu udaje nam się ugotować coś, co smakuje lepiej niż odgryzione kęsy z talerzyka dziecka. Dla siebie. I dla bobasów, którym i tak wszystko jedno.</p>
+
+      <p class="eyebrow" style="margin-top:44px;">Jak to działa</p>
+      <h2 style="font-size:2rem; margin-top:10px;">Wrzuć przepis na półkę</h2>
+      <ul class="steps">
+        <li>
+          <span class="step-mark">1</span>
+          <div>
+            <h4>Wybierz słoik</h4>
+            <p>Przypisz przepis do kategorii — ziemniaki, makarony, zupy i tak dalej. Bez tego nikt go nie znajdzie w chaosie.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-mark">2</span>
+          <div>
+            <h4>Napisz szczerze</h4>
+            <p>Nikt tu nie ocenia, że użyłaś gotowego sosu. Liczy się, że dziecko zjadło i nikt nie płakał.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-mark">3</span>
+          <div>
+            <h4>Ustaw poziom chaosu</h4>
+            <p>Trzy krople oznaczają przepis awaryjny — zrobiony w pięć minut i bez wyrzutów sumienia. Zero kropli — dla dni, gdy naprawdę miałaś ochotę i czas, żeby coś ugotować.</p>
+          </div>
+        </li>
+      </ul>
+      <div class="hero-actions" style="margin-top:32px;">
+        <button class="btn btn-gold js-open-modal">Dodaj swój przepis</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="footer-inner">
+    <p class="footer-note">Klub przepisów dla mam, którym bliżej do prawdy niż do Instagrama. Żadna z tych mamuśek nie jest naprawdę toksyczna. Prawdopodobnie.</p>
+    <div class="footer-links">
+      <a href="#przepisy">Przepisy</a>
+      <a href="#kategorie">Kategorie</a>
+      <a href="#dolacz">O klubie</a>
+    </div>
+  </div>
+  <p class="copyright">© 2026 Toksyczne Mamuśki. Wszystkie prawa zastrzeżone (i większość obiadów też).</p>
+</footer>
+
+<div class="modal-overlay" id="categoryModalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="categoryModalTitle" style="max-width:420px;">
+    <button class="modal-close" id="categoryModalClose" aria-label="Zamknij">✕</button>
+    <h3 id="categoryModalTitle">Nowa kategoria</h3>
+    <p class="modal-sub">Postaw nowy słoik na półce — przyda się, gdy żadna istniejąca kategoria nie pasuje.</p>
+    <form id="categoryForm">
+      <div class="field">
+        <label for="catName">Nazwa kategorii</label>
+        <input type="text" id="catName" required placeholder="np. Śniadania">
+      </div>
+      <div class="field">
+        <label>Ikonka kategorii</label>
+        <div class="icon-picker" id="catIconPicker">
+          <button type="button" data-emoji="🥐">🥐</button>
+          <button type="button" data-emoji="🍳">🍳</button>
+          <button type="button" data-emoji="🥗">🥗</button>
+          <button type="button" data-emoji="🍕">🍕</button>
+          <button type="button" data-emoji="🍔">🍔</button>
+          <button type="button" data-emoji="🧁">🧁</button>
+          <button type="button" data-emoji="🍹">🍹</button>
+          <button type="button" data-emoji="🍯">🍯</button>
+          <input type="text" id="catEmoji" maxlength="4" placeholder="własna">
+        </div>
+        <p class="auth-error" id="catEmojiError"></p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="categoryCancel">Anuluj</button>
+        <button type="submit" class="btn btn-gold">Postaw na półce</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="detailModalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+    <button class="modal-close" id="detailModalClose" aria-label="Zamknij">✕</button>
+    <div class="detail-media" id="detailMedia"></div>
+    <span class="card-tag" id="detailTag" style="margin-top:20px; display:block;"></span>
+    <h3 id="detailModalTitle" style="margin-top:6px; font-size:1.6rem;"></h3>
+    <p id="detailDesc" style="color:var(--cream-dim); margin-top:14px; line-height:1.6;"></p>
+    <div class="card-meta" style="margin-top:8px;">
+      <span id="detailMeta"></span>
+      <span class="sass-meter" id="detailSass"></span>
+    </div>
+    <div id="detailIngredientsWrap" style="display:none;">
+      <p class="detail-section-title">Składniki</p>
+      <ul class="ingredients-view" id="detailIngredients"></ul>
+    </div>
+    <div id="detailInstructionsWrap" style="display:none;">
+      <p class="detail-section-title">Sposób przygotowania</p>
+      <p class="instructions-view" id="detailInstructions"></p>
+    </div>
+    <div class="modal-actions" id="detailActions" style="justify-content:space-between; align-items:center;">
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn btn-ghost" id="detailEditBtn" style="display:none;">✎ Edytuj</button>
+        <button type="button" class="btn btn-ghost" id="detailDeleteBtn" style="display:none; color:var(--rose); border-color:rgba(217,127,160,0.4);">🗑 Usuń</button>
+      </div>
+      <button type="button" class="btn btn-gold" id="detailCloseBtn" style="margin-left:auto;">Zamknij</button>
+    </div>
+    <p class="auth-error" id="deleteConfirmText" style="display:none; text-align:right; margin-top:10px;"></p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="loginModalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle" style="max-width:420px;">
+    <button class="modal-close" id="loginModalClose" aria-label="Zamknij">✕</button>
+    <h3 id="loginModalTitle">Dołącz do klubu</h3>
+    <p class="modal-sub" id="loginModalSub">Załóż konto albo zaloguj się, jeśli już do nas należysz.</p>
+
+    <div class="auth-tabs">
+      <button type="button" class="auth-tab active" data-tab="register">Nowe konto</button>
+      <button type="button" class="auth-tab" data-tab="login">Mam już konto</button>
+    </div>
+
+    <form id="registerForm">
+      <div class="field">
+        <label for="regEmail">Adres e-mail</label>
+        <input type="email" id="regEmail" required placeholder="ola@przyklad.pl">
+      </div>
+      <div class="field">
+        <label for="regName">Imię (np. Mamuśka Ola)</label>
+        <input type="text" id="regName" required placeholder="Mamuśka Ola">
+      </div>
+      <div class="field">
+        <label for="regPassword">Hasło</label>
+        <input type="password" id="regPassword" required placeholder="Co najmniej 4 znaki" minlength="4">
+      </div>
+      <p class="auth-error" id="registerError"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="loginCancel">Anuluj</button>
+        <button type="submit" class="btn btn-gold">Dołącz do klubu</button>
+      </div>
+    </form>
+
+    <form id="loginForm" style="display:none;">
+      <div class="field">
+        <label for="loginEmail">Adres e-mail</label>
+        <input type="email" id="loginEmail" required placeholder="ola@przyklad.pl">
+      </div>
+      <div class="field">
+        <label for="loginPassword">Hasło</label>
+        <input type="password" id="loginPassword" required placeholder="Twoje hasło">
+      </div>
+      <p class="auth-error" id="loginError"></p>
+      <p class="auth-hint">Konta z przykładowych przepisów: e-mail autorki (np. ania@toksycznemamuski.pl), hasło <code>mamuska</code>.</p>
+      <button type="button" class="link-btn" id="forgotPasswordLink">Nie pamiętasz hasła?</button>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="loginCancel2">Anuluj</button>
+        <button type="submit" class="btn btn-gold">Zaloguj się</button>
+      </div>
+    </form>
+
+    <form id="resetForm" style="display:none;">
+      <div class="field">
+        <label for="resetEmail">Adres e-mail konta</label>
+        <input type="email" id="resetEmail" required placeholder="ola@przyklad.pl">
+      </div>
+      <p class="auth-error" id="resetError"></p>
+      <p class="auth-hint">Wyślemy link do zmiany hasła na podany adres e-mail.</p>
+      <button type="button" class="link-btn" id="backToLoginLink">← Wróć do logowania</button>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="loginCancel3">Anuluj</button>
+        <button type="submit" class="btn btn-gold">Wyślij link</button>
+      </div>
+    </form>
+
+    <form id="recoveryForm" style="display:none;">
+      <div class="field">
+        <label for="recoveryPassword">Nowe hasło</label>
+        <input type="password" id="recoveryPassword" required placeholder="Co najmniej 4 znaki" minlength="4">
+      </div>
+      <p class="auth-error" id="recoveryError"></p>
+      <p class="auth-hint">Kliknęłaś link z maila — ustaw teraz nowe hasło do konta.</p>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-gold" style="margin-left:auto;">Ustaw nowe hasło</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Zamknij">✕</button>
+    <h3 id="modalTitle">Dodaj przepis na półkę</h3>
+    <p class="modal-sub">Nikt tu nie ocenia gotowego sosu. Wypełnij, co masz.</p>
+    <form id="recipeForm">
+      <div class="field-row">
+        <div class="field">
+          <label for="rCategory">Kategoria</label>
+          <select id="rCategory" required>
+            <option value="ziemniaki">🥔 Ziemniaki</option>
+            <option value="makarony">🍝 Makarony</option>
+            <option value="zupy">🍲 Zupy</option>
+            <option value="slodkosci">🍰 Słodkości</option>
+            <option value="szybkie">⚡ Na szybko</option>
+            <option value="wino">🍷 Wino i przekąski</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rTime">Czas przygotowania</label>
+          <input type="text" id="rTime" required placeholder="np. 20 min">
+        </div>
+      </div>
+      <div class="field">
+        <label for="rTitle">Nazwa przepisu</label>
+        <input type="text" id="rTitle" required placeholder="np. Zupa na 'nie mam siły'">
+        <div class="chip-row" id="titleSuggestions"></div>
+      </div>
+      <div class="field">
+        <label>Ikonka dania</label>
+        <div class="icon-picker" id="iconPicker">
+          <button type="button" data-emoji="🍽️">🍽️</button>
+          <button type="button" data-emoji="🥘">🥘</button>
+          <button type="button" data-emoji="🍜">🍜</button>
+          <button type="button" data-emoji="🥗">🥗</button>
+          <button type="button" data-emoji="🧁">🧁</button>
+          <button type="button" data-emoji="🍞">🍞</button>
+          <button type="button" data-emoji="🍹">🍹</button>
+          <button type="button" data-emoji="🔥">🔥</button>
+          <input type="text" id="customEmoji" maxlength="4" placeholder="własna">
+        </div>
+        <p class="auth-error" id="customEmojiError"></p>
+      </div>
+      <div class="field">
+        <label for="rDesc">Krótki opis</label>
+        <textarea id="rDesc" required placeholder="Co sprawia, że ten przepis ratuje dzień?"></textarea>
+      </div>
+      <div class="field">
+        <label>Składniki (ilość / gramatura + nazwa)</label>
+        <div id="ingredientsList"></div>
+        <button type="button" class="link-btn" id="addIngredientBtn" style="margin:2px 0 0;">+ Dodaj składnik</button>
+      </div>
+      <div class="field">
+        <label for="rInstructions">Sposób przygotowania</label>
+        <textarea id="rInstructions" placeholder="Opisz krok po kroku, jak przyrządzić danie…" style="min-height:120px;"></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Autorka</label>
+          <input type="text" id="rAuthor" disabled>
+        </div>
+        <div class="field">
+          <label>Poziom chaosu</label>
+          <div class="sass-picker" id="sassPicker">
+            <button type="button" data-val="1"><svg class="drop" viewBox="0 0 9 12"><path d="M4.5 0 C4.5 0 9 6 9 8.5 A4.5 4.5 0 0 1 0 8.5 C0 6 4.5 0 4.5 0Z" fill="#4a483f"/></svg></button>
+            <button type="button" data-val="2"><svg class="drop" viewBox="0 0 9 12"><path d="M4.5 0 C4.5 0 9 6 9 8.5 A4.5 4.5 0 0 1 0 8.5 C0 6 4.5 0 4.5 0Z" fill="#4a483f"/></svg></button>
+            <button type="button" data-val="3"><svg class="drop" viewBox="0 0 9 12"><path d="M4.5 0 C4.5 0 9 6 9 8.5 A4.5 4.5 0 0 1 0 8.5 C0 6 4.5 0 4.5 0Z" fill="#4a483f"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="modalCancel">Anuluj</button>
+        <button type="submit" class="btn btn-gold">Wrzuć na półkę</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast">Przepis dodany do klubu 🎉</div>
+
+<script>
+  // ============================================================
+  // KONFIGURACJA SUPABASE — wklej tu swoje dane z Supabase:
+  // Project Settings → API → Project URL oraz anon public key
+  // ============================================================
+  const SUPABASE_URL = 'https://xjoacvzcslzzktvoaujm.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhqb2Fjdnpjc2x6emt0dm9hdWptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxMzA3NTUsImV4cCI6MjA5OTcwNjc1NX0.Gyc_LwPdYYKnDXQMO4Kx1ngh01ykiVcK_AedM1U1KDM';
+
+  const grid = document.getElementById('recipeGrid');
+
+  const _url = (SUPABASE_URL || '').trim();
+  const _key = (SUPABASE_ANON_KEY || '').trim();
+  const isConfigured = _url && _key
+    && !_url.includes('TWOJ_') && !_key.includes('TWOJ_')
+    && _url.startsWith('http');
+
+  let sb = null;
+  let configError = null;
+
+  if (!isConfigured){
+    configError = 'Strona nie jest jeszcze podłączona do Supabase. Wpisz swój Project URL i Anon Key w kodzie strony (zmienne SUPABASE_URL i SUPABASE_ANON_KEY na górze skryptu).';
+  } else if (!window.supabase || !window.supabase.createClient){
+    configError = 'Nie udało się wczytać biblioteki Supabase (sprawdź połączenie z internetem albo czy adres CDN w <head> nie jest zablokowany).';
+  } else {
+    try {
+      sb = window.supabase.createClient(_url, _key);
+    } catch (err){
+      configError = 'Błąd inicjalizacji Supabase — sprawdź, czy SUPABASE_URL to prawidłowy adres (np. https://twojprojekt.supabase.co). Szczegóły: ' + err.message;
+    }
+  }
+
+  if (configError){
+    grid.innerHTML = `<p class="empty-state">⚠️ ${configError}</p>`;
+    console.error(configError);
+  }
+
+  function requireSb(){
+    if (!sb){
+      alert('Strona nie jest jeszcze podłączona do Supabase — administrator strony musi wpisać SUPABASE_URL i SUPABASE_ANON_KEY w kodzie.');
+      return false;
+    }
+    return true;
+  }
+  const toast = document.getElementById('toast');
+
+  const catMeta = {
+    ziemniaki: { label: 'Ziemniaki', emoji: '🥔', bg: 'linear-gradient(135deg,#3c5c2e,#1e3324)' },
+    makarony:  { label: 'Makarony',  emoji: '🍝', bg: 'linear-gradient(135deg,#8a4b52,#3c2426)' },
+    zupy:      { label: 'Zupy',      emoji: '🍲', bg: 'linear-gradient(135deg,#c9a227,#5c4d1c)' },
+    slodkosci: { label: 'Słodkości', emoji: '🍰', bg: 'linear-gradient(135deg,#d97fa0,#5c2c3a)' },
+    szybkie:   { label: 'Na szybko', emoji: '⚡', bg: 'linear-gradient(135deg,#8fb84a,#2f4a24)' },
+    wino:      { label: 'Wino i przekąski', emoji: '🍷', bg: 'linear-gradient(135deg,#6b2b3a,#2b1218)' },
+  };
+
+  const waxSealSvg = '<svg class="wax-seal" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#c9a227" opacity="0.9"/><path d="M20 10 C27 18 27 25 20 30 C13 25 13 18 20 10 Z" stroke="#16261b" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // Sprawdza, czy tekst zawiera prawdziwy znak emoji (a nie np. literki albo zepsuty znak)
+  function isEmoji(str){
+    return /\p{Extended_Pictographic}/u.test(str);
+  }
+
+  // Zabezpiecza tekst wstawiany przez innerHTML (np. nazwy składników)
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  // ---------- Recipe data (ładowane z Supabase) ----------
+  let recipes = [];
+  let currentFilter = 'all';
+
+  async function loadRecipes(){
+    if (!sb) return;
+    const { data, error } = await sb
+      .from('recipes')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error){
+      console.error('Błąd wczytywania przepisów:', error);
+      grid.innerHTML = '<p class="empty-state">Nie udało się wczytać przepisów. Sprawdź konfigurację Supabase (SUPABASE_URL / SUPABASE_ANON_KEY) w kodzie strony.</p>';
+      return;
+    }
+    recipes = data.map(r => ({
+      id: r.id,
+      cat: r.cat,
+      title: r.title,
+      desc: r.description,
+      time: r.time,
+      emoji: r.emoji,
+      sass: r.sass,
+      author: r.author_name,
+      authorId: r.author_id,
+      ingredients: r.ingredients || [],
+      instructions: r.instructions || '',
+    }));
+    renderRecipes();
+  }
+
+  async function loadCategories(){
+    if (!sb) return;
+    const { data, error } = await sb.from('categories').select('*');
+    if (error){
+      console.error('Błąd wczytywania kategorii:', error);
+      return;
+    }
+    data.forEach(c => {
+      if (!catMeta[c.id]){
+        catMeta[c.id] = { label: c.label, emoji: c.emoji, bg: c.bg };
+        addCategoryButtonToUI(c.id, c.label, c.emoji);
+      }
+    });
+  }
+
+  // ---------- Auth ----------
+  let currentUser = null; // { id, email, name }
+  let pendingOpenRecipeModal = false;
+  const authArea = document.getElementById('authArea');
+
+  function userFromSession(session){
+    if (!session || !session.user) return null;
+    return {
+      id: session.user.id,
+      email: session.user.email,
+      name: (session.user.user_metadata && session.user.user_metadata.name) || session.user.email,
+    };
+  }
+
+  function renderAuthArea(){
+    if (currentUser){
+      authArea.innerHTML = `
+        <span class="auth-greeting">Cześć, <span class="name">${currentUser.name}</span> · <button type="button" id="logoutBtn">Wyloguj</button></span>
+        <button class="btn btn-gold js-open-modal">Dodaj przepis</button>
+      `;
+      document.getElementById('logoutBtn').addEventListener('click', logout);
+    } else {
+      authArea.innerHTML = `
+        <button class="btn btn-ghost js-open-login">Dołącz do klubu</button>
+        <button class="btn btn-gold js-open-modal">Dodaj przepis</button>
+      `;
+    }
+    // Re-bind triggers each time the auth area is rebuilt
+    document.querySelectorAll('.js-open-login').forEach(b => b.addEventListener('click', () => openLoginModal(false)));
+    document.querySelectorAll('.js-open-modal').forEach(b => b.addEventListener('click', handleAddRecipeClick));
+  }
+
+  async function logout(){
+    if (!sb) return;
+    await sb.auth.signOut();
+    // onAuthStateChange zajmie się resztą (currentUser = null, re-render)
+  }
+
+  function handleAddRecipeClick(){
+    if (!currentUser){
+      pendingOpenRecipeModal = true;
+      openLoginModal(true);
+    } else {
+      openRecipeModal();
+    }
+  }
+
+  function afterLoginSuccess(){
+    const shouldOpenRecipeModal = pendingOpenRecipeModal;
+    closeLoginModal();
+    if (shouldOpenRecipeModal){
+      openRecipeModal();
+    }
+  }
+
+  // ---------- Login / register modal ----------
+  const loginOverlay = document.getElementById('loginModalOverlay');
+  const loginModalSub = document.getElementById('loginModalSub');
+  const loginModalClose = document.getElementById('loginModalClose');
+  const loginCancel = document.getElementById('loginCancel');
+  const loginCancel2 = document.getElementById('loginCancel2');
+
+  const authTabs = document.querySelectorAll('.auth-tab');
+  const registerForm = document.getElementById('registerForm');
+  const loginForm = document.getElementById('loginForm');
+  const resetForm = document.getElementById('resetForm');
+  const recoveryForm = document.getElementById('recoveryForm');
+  const regEmailInput = document.getElementById('regEmail');
+  const regNameInput = document.getElementById('regName');
+  const regPasswordInput = document.getElementById('regPassword');
+  const registerError = document.getElementById('registerError');
+  const loginEmailInput = document.getElementById('loginEmail');
+  const loginPasswordInput = document.getElementById('loginPassword');
+  const loginError = document.getElementById('loginError');
+  const resetEmailInput = document.getElementById('resetEmail');
+  const resetError = document.getElementById('resetError');
+  const recoveryPasswordInput = document.getElementById('recoveryPassword');
+  const recoveryError = document.getElementById('recoveryError');
+  const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+  const backToLoginLink = document.getElementById('backToLoginLink');
+  const loginCancel3 = document.getElementById('loginCancel3');
+
+  function switchAuthTab(tab){
+    authTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+    registerForm.style.display = tab === 'register' ? '' : 'none';
+    loginForm.style.display = tab === 'login' ? '' : 'none';
+    resetForm.style.display = tab === 'reset' ? '' : 'none';
+    recoveryForm.style.display = tab === 'recovery' ? '' : 'none';
+    registerError.textContent = '';
+    loginError.textContent = '';
+    resetError.textContent = '';
+    recoveryError.textContent = '';
+    if (tab === 'register') regEmailInput.focus();
+    if (tab === 'login') loginEmailInput.focus();
+    if (tab === 'reset') resetEmailInput.focus();
+    if (tab === 'recovery') recoveryPasswordInput.focus();
+  }
+  authTabs.forEach(t => t.addEventListener('click', () => switchAuthTab(t.dataset.tab)));
+  forgotPasswordLink.addEventListener('click', () => switchAuthTab('reset'));
+  backToLoginLink.addEventListener('click', () => switchAuthTab('login'));
+
+  function openLoginModal(forAdding){
+    loginModalSub.textContent = forAdding
+      ? 'Dołącz do klubu, żeby dodać swój przepis na półkę.'
+      : 'Załóż konto albo zaloguj się, jeśli już do nas należysz.';
+    switchAuthTab('register');
+    loginOverlay.classList.add('open');
+  }
+  function closeLoginModal(){
+    loginOverlay.classList.remove('open');
+    registerForm.reset();
+    loginForm.reset();
+    resetForm.reset();
+    recoveryForm.reset();
+    registerError.textContent = '';
+    loginError.textContent = '';
+    resetError.textContent = '';
+    recoveryError.textContent = '';
+    pendingOpenRecipeModal = false;
+  }
+  loginModalClose.addEventListener('click', closeLoginModal);
+  loginCancel.addEventListener('click', closeLoginModal);
+  loginCancel2.addEventListener('click', closeLoginModal);
+  loginCancel3.addEventListener('click', closeLoginModal);
+  loginOverlay.addEventListener('click', e => { if (e.target === loginOverlay) closeLoginModal(); });
+
+  registerForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!requireSb()) return;
+    const email = regEmailInput.value.trim().toLowerCase();
+    const name = regNameInput.value.trim();
+    const password = regPasswordInput.value;
+    if (!email || !name || !password) return;
+
+    const submitBtn = registerForm.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    const { data, error } = await sb.auth.signUp({
+      email, password,
+      options: { data: { name } }
+    });
+    submitBtn.disabled = false;
+
+    if (error){
+      registerError.textContent = error.message;
+      return;
+    }
+    if (data.session){
+      // Potwierdzanie e-maila wyłączone w ustawieniach Supabase — logujemy od razu
+      afterLoginSuccess();
+    } else {
+      // Potwierdzanie e-maila włączone — trzeba kliknąć link z maila
+      switchAuthTab('login');
+      loginEmailInput.value = email;
+      loginError.textContent = 'Sprawdź maila i potwierdź konto, a potem się zaloguj.';
+    }
+  });
+
+  loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!requireSb()) return;
+    const email = loginEmailInput.value.trim().toLowerCase();
+    const password = loginPasswordInput.value;
+
+    const submitBtn = loginForm.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    submitBtn.disabled = false;
+
+    if (error){
+      loginError.textContent = 'Nieprawidłowy e-mail lub hasło.';
+      return;
+    }
+    afterLoginSuccess();
+  });
+
+  resetForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!requireSb()) return;
+    const email = resetEmailInput.value.trim().toLowerCase();
+    if (!email) return;
+
+    const submitBtn = resetForm.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+    submitBtn.disabled = false;
+
+    if (error){
+      resetError.textContent = error.message;
+      return;
+    }
+    switchAuthTab('login');
+    loginEmailInput.value = email;
+    loginError.textContent = 'Wysłaliśmy link do zmiany hasła na podany adres e-mail.';
+  });
+
+  recoveryForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!requireSb()) return;
+    const newPassword = recoveryPasswordInput.value;
+    if (!newPassword) return;
+
+    const submitBtn = recoveryForm.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    const { error } = await sb.auth.updateUser({ password: newPassword });
+    submitBtn.disabled = false;
+
+    if (error){
+      recoveryError.textContent = error.message;
+      return;
+    }
+    closeLoginModal();
+    toast.textContent = 'Hasło zmienione — jesteś teraz zalogowana 🎉';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2600);
+  });
+
+  // ---------- Recipe modal (add / edit) ----------
+  const overlay = document.getElementById('modalOverlay');
+  const modalTitleEl = document.getElementById('modalTitle');
+  const closeBtn = document.getElementById('modalClose');
+  const cancelBtn = document.getElementById('modalCancel');
+  const form = document.getElementById('recipeForm');
+  const rAuthorInput = document.getElementById('rAuthor');
+  const rTitleInput = document.getElementById('rTitle');
+  const rCategoryInput = document.getElementById('rCategory');
+  const titleSuggestionsEl = document.getElementById('titleSuggestions');
+
+  const nameSuggestions = {
+    ziemniaki: ['Placki, bo nikt nie zauważy, że wczorajsze', 'Frytki z pieca na "mama się dziś nie wysila"', 'Zapiekanka ziemniaczana na zszarganą cierpliwość'],
+    makarony: ['Makaron z niczym, ale z miłością', 'Penne na "zjedz cokolwiek"', 'Lasagne, bo warstwy jak dzisiejsze emocje'],
+    zupy: ['Krupnik na zszargane nerwy', 'Pomidorowa, bo klasyka nie zawodzi', 'Zupa dnia, czyli co było w lodówce'],
+    slodkosci: ['Ciasto na "zasłużyłam sobie"', 'Muffinki na szybkie pocieszenie', 'Brownie, bo czekolada leczy wszystko'],
+    szybkie: ['Tosty w 3 minuty, bo drugie dziecko już płacze', 'Jajecznica na "nie mam siły gotować"', 'Kanapki ratunkowe na już'],
+    wino: ['Aperol na koniec dnia', 'Przekąski na "podobno mamy gości"', 'Winko + oliwki, czyli plan awaryjny'],
+  };
+
+  function renderTitleSuggestions(){
+    const cat = rCategoryInput.value;
+    const list = nameSuggestions[cat];
+    titleSuggestionsEl.innerHTML = '';
+    if (!list){
+      return;
+    }
+    list.forEach(name => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chip';
+      chip.textContent = name;
+      chip.addEventListener('click', () => { rTitleInput.value = name; });
+      titleSuggestionsEl.appendChild(chip);
+    });
+  }
+  rCategoryInput.addEventListener('change', renderTitleSuggestions);
+
+  // Icon picker
+  const iconButtons = document.querySelectorAll('#iconPicker button');
+  const customEmojiInput = document.getElementById('customEmoji');
+  const customEmojiError = document.getElementById('customEmojiError');
+  let selectedEmoji = '🍽️';
+
+  function setIcon(emoji){
+    selectedEmoji = emoji;
+    iconButtons.forEach(b => b.classList.toggle('active', b.dataset.emoji === emoji));
+  }
+  iconButtons.forEach(b => b.addEventListener('click', () => {
+    customEmojiInput.value = '';
+    customEmojiError.textContent = '';
+    setIcon(b.dataset.emoji);
+  }));
+  customEmojiInput.addEventListener('input', () => {
+    const val = customEmojiInput.value.trim();
+    if (!val){
+      customEmojiError.textContent = '';
+      return;
+    }
+    if (isEmoji(val)){
+      customEmojiError.textContent = '';
+      iconButtons.forEach(b => b.classList.remove('active'));
+      selectedEmoji = val;
+    } else {
+      customEmojiError.textContent = 'To nie wygląda na emotikonę — spróbuj wkleić inną.';
+    }
+  });
+
+  let editingId = null;
+
+  // ---------- Składniki (dynamiczne wiersze) ----------
+  const ingredientsList = document.getElementById('ingredientsList');
+  const addIngredientBtn = document.getElementById('addIngredientBtn');
+  const rInstructionsInput = document.getElementById('rInstructions');
+
+  function createIngredientRow(amount, name){
+    const row = document.createElement('div');
+    row.className = 'ingredient-row';
+    row.innerHTML = `
+      <input type="text" class="ing-amount" placeholder="np. 200 g" value="${amount ? amount.replace(/"/g,'&quot;') : ''}">
+      <input type="text" class="ing-name" placeholder="np. mąka pszenna" value="${name ? name.replace(/"/g,'&quot;') : ''}">
+      <button type="button" class="ingredient-remove" title="Usuń składnik">✕</button>
+    `;
+    row.querySelector('.ingredient-remove').addEventListener('click', () => row.remove());
+    ingredientsList.appendChild(row);
+  }
+  addIngredientBtn.addEventListener('click', () => createIngredientRow('', ''));
+
+  function resetIngredientRows(items){
+    ingredientsList.innerHTML = '';
+    if (items && items.length){
+      items.forEach(it => createIngredientRow(it.amount, it.name));
+    } else {
+      createIngredientRow('', '');
+      createIngredientRow('', '');
+    }
+  }
+
+  function collectIngredients(){
+    return [...ingredientsList.querySelectorAll('.ingredient-row')]
+      .map(row => ({
+        amount: row.querySelector('.ing-amount').value.trim(),
+        name: row.querySelector('.ing-name').value.trim(),
+      }))
+      .filter(it => it.name);
+  }
+
+  function openRecipeModal(recipe){
+    editingId = recipe ? recipe.id : null;
+    modalTitleEl.textContent = recipe ? 'Edytuj swój przepis' : 'Dodaj przepis na półkę';
+    rAuthorInput.value = currentUser ? currentUser.name : '';
+    customEmojiInput.value = '';
+    customEmojiError.textContent = '';
+    if (recipe){
+      document.getElementById('rTitle').value = recipe.title;
+      document.getElementById('rCategory').value = recipe.cat;
+      document.getElementById('rTime').value = recipe.time;
+      document.getElementById('rDesc').value = recipe.desc;
+      rInstructionsInput.value = recipe.instructions || '';
+      resetIngredientRows(recipe.ingredients);
+      setSass(recipe.sass);
+      const match = [...iconButtons].some(b => b.dataset.emoji === recipe.emoji);
+      if (match){
+        setIcon(recipe.emoji);
+      } else {
+        setIcon('🍽️');
+        customEmojiInput.value = recipe.emoji;
+        selectedEmoji = recipe.emoji;
+        iconButtons.forEach(b => b.classList.remove('active'));
+      }
+    } else {
+      form.reset();
+      rAuthorInput.value = currentUser ? currentUser.name : '';
+      rInstructionsInput.value = '';
+      resetIngredientRows(null);
+      setSass(0);
+      setIcon('🍽️');
+    }
+    renderTitleSuggestions();
+    overlay.classList.add('open');
+  }
+  function closeModal(){
+    overlay.classList.remove('open');
+    form.reset();
+    setSass(0);
+    editingId = null;
+  }
+  closeBtn.addEventListener('click', closeModal);
+  cancelBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+
+  // ---------- Detail modal ----------
+  const detailOverlay = document.getElementById('detailModalOverlay');
+  const detailModalClose = document.getElementById('detailModalClose');
+  const detailMedia = document.getElementById('detailMedia');
+  const detailTag = document.getElementById('detailTag');
+  const detailModalTitle = document.getElementById('detailModalTitle');
+  const detailDesc = document.getElementById('detailDesc');
+  const detailMeta = document.getElementById('detailMeta');
+  const detailSass = document.getElementById('detailSass');
+  const detailEditBtn = document.getElementById('detailEditBtn');
+  const detailDeleteBtn = document.getElementById('detailDeleteBtn');
+  const detailCloseBtn = document.getElementById('detailCloseBtn');
+  const deleteConfirmText = document.getElementById('deleteConfirmText');
+  const detailIngredientsWrap = document.getElementById('detailIngredientsWrap');
+  const detailIngredients = document.getElementById('detailIngredients');
+  const detailInstructionsWrap = document.getElementById('detailInstructionsWrap');
+  const detailInstructions = document.getElementById('detailInstructions');
+
+  function openDetailModal(r){
+    const meta = catMeta[r.cat];
+    detailMedia.style.background = meta.bg;
+    detailMedia.textContent = r.emoji || meta.emoji;
+    detailTag.textContent = meta.label;
+    detailModalTitle.textContent = r.title;
+    detailDesc.textContent = r.desc;
+    detailMeta.textContent = `⏱ ${r.time} · ${r.author}`;
+    let drops = '';
+    for (let i = 1; i <= 3; i++){
+      drops += `<span class="drop${i <= r.sass ? ' on' : ''}"></span>`;
+    }
+    detailSass.innerHTML = drops;
+
+    if (r.ingredients && r.ingredients.length){
+      detailIngredientsWrap.style.display = '';
+      detailIngredients.innerHTML = r.ingredients
+        .map(it => `<li>${it.amount ? `<span class="amount">${escapeHtml(it.amount)}</span>` : ''}<span>${escapeHtml(it.name)}</span></li>`)
+        .join('');
+    } else {
+      detailIngredientsWrap.style.display = 'none';
+    }
+
+    if (r.instructions && r.instructions.trim()){
+      detailInstructionsWrap.style.display = '';
+      detailInstructions.textContent = r.instructions;
+    } else {
+      detailInstructionsWrap.style.display = 'none';
+    }
+
+    deleteConfirmText.style.display = 'none';
+    deleteConfirmText.textContent = '';
+    let confirmingDelete = false;
+
+    const canEdit = currentUser && currentUser.id === r.authorId;
+    detailEditBtn.style.display = canEdit ? '' : 'none';
+    detailDeleteBtn.style.display = canEdit ? '' : 'none';
+    detailEditBtn.onclick = () => {
+      closeDetailModal();
+      openRecipeModal(r);
+    };
+    detailDeleteBtn.textContent = '🗑 Usuń';
+    detailDeleteBtn.onclick = async () => {
+      if (!confirmingDelete){
+        confirmingDelete = true;
+        detailDeleteBtn.textContent = 'Na pewno?';
+        deleteConfirmText.style.display = 'block';
+        deleteConfirmText.textContent = 'Kliknij "Na pewno?" jeszcze raz, żeby usunąć przepis bezpowrotnie.';
+        return;
+      }
+      if (!requireSb()) return;
+      detailDeleteBtn.disabled = true;
+      const { error } = await sb.from('recipes').delete().eq('id', r.id);
+      detailDeleteBtn.disabled = false;
+      if (error){
+        deleteConfirmText.textContent = 'Nie udało się usunąć: ' + error.message;
+        return;
+      }
+      await loadRecipes();
+      closeDetailModal();
+      toast.textContent = 'Przepis usunięty z półki';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2600);
+    };
+    detailOverlay.classList.add('open');
+  }
+  function closeDetailModal(){
+    detailOverlay.classList.remove('open');
+  }
+  detailModalClose.addEventListener('click', closeDetailModal);
+  detailCloseBtn.addEventListener('click', closeDetailModal);
+  detailOverlay.addEventListener('click', e => { if (e.target === detailOverlay) closeDetailModal(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape'){
+      if (overlay.classList.contains('open')) closeModal();
+      if (loginOverlay.classList.contains('open')) closeLoginModal();
+      if (categoryOverlay.classList.contains('open')) closeCategoryModal();
+      if (detailOverlay.classList.contains('open')) closeDetailModal();
+    }
+  });
+
+  // Sass level picker
+  let sassValue = 0;
+  const sassButtons = document.querySelectorAll('#sassPicker button');
+  function setSass(val){
+    sassValue = val;
+    sassButtons.forEach(b => {
+      const on = parseInt(b.dataset.val) <= val;
+      b.querySelector('path').setAttribute('fill', on ? '#d97fa0' : '#4a483f');
+    });
+  }
+  sassButtons.forEach(b => b.addEventListener('click', () => setSass(parseInt(b.dataset.val))));
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!requireSb()) return;
+    const title = document.getElementById('rTitle').value.trim();
+    const cat = document.getElementById('rCategory').value;
+    const time = document.getElementById('rTime').value.trim();
+    const desc = document.getElementById('rDesc').value.trim();
+    const instructions = rInstructionsInput.value.trim();
+    const ingredients = collectIngredients();
+    const sass = sassValue || 1;
+    const emoji = selectedEmoji || catMeta[cat].emoji;
+
+    const submitBtn = form.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+
+    if (editingId){
+      const { error } = await sb
+        .from('recipes')
+        .update({ title, cat, time, description: desc, sass, emoji, ingredients, instructions })
+        .eq('id', editingId);
+      submitBtn.disabled = false;
+      if (error){ alert('Nie udało się zapisać zmian: ' + error.message); return; }
+      toast.textContent = 'Przepis zaktualizowany ✎';
+    } else {
+      const { error } = await sb
+        .from('recipes')
+        .insert({ cat, title, description: desc, time, sass, emoji, ingredients, instructions, author_name: currentUser.name, author_id: currentUser.id });
+      submitBtn.disabled = false;
+      if (error){ alert('Nie udało się dodać przepisu: ' + error.message); return; }
+      toast.textContent = 'Przepis dodany do klubu 🎉';
+    }
+
+    await loadRecipes();
+    closeModal();
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2600);
+  });
+
+  // ---------- Render ----------
+  function renderRecipes(){
+    grid.innerHTML = '';
+    const visible = recipes.filter(r => currentFilter === 'all' || r.cat === currentFilter);
+
+    if (visible.length === 0){
+      grid.innerHTML = '<p class="empty-state">Pusto na tej półce. Bądź pierwszą, która coś tu wrzuci.</p>';
+      return;
+    }
+
+    visible.forEach(r => {
+      const meta = catMeta[r.cat];
+      let drops = '';
+      for (let i = 1; i <= 3; i++){
+        drops += `<span class="drop${i <= r.sass ? ' on' : ''}"></span>`;
+      }
+      const canEdit = currentUser && currentUser.id === r.authorId;
+
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.dataset.cat = r.cat;
+      card.innerHTML = `
+        <div class="card-stamp" style="background:${meta.bg};">${r.emoji || meta.emoji}</div>
+        <span class="card-tag">${meta.label}</span>
+        <div class="card-body">
+          <h3>${r.title}</h3>
+          <p class="desc">${r.desc}</p>
+          <div class="card-meta">
+            <span>⏱ ${r.time} · ${r.author}</span>
+            <span class="sass-meter">${drops}</span>
+          </div>
+          ${canEdit ? `<button type="button" class="edit-btn">✎ Edytuj przepis</button>` : ''}
+        </div>
+      `;
+      if (canEdit){
+        card.querySelector('.edit-btn').addEventListener('click', e => {
+          e.stopPropagation();
+          openRecipeModal(r);
+        });
+      }
+      card.addEventListener('click', () => openDetailModal(r));
+      grid.appendChild(card);
+    });
+  }
+
+  // ---------- Category filter ----------
+  const filterBar = document.getElementById('filterBar');
+  const rCategorySelect = document.getElementById('rCategory');
+
+  function bindFilterButton(btn){
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.jar-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderRecipes();
+    });
+  }
+  document.querySelectorAll('.jar-btn[data-filter]').forEach(bindFilterButton);
+
+  // ---------- New category creation ----------
+  const gradientPalette = [
+    'linear-gradient(135deg,#5c7a3a,#233d21)',
+    'linear-gradient(135deg,#9a6b2e,#4a3418)',
+    'linear-gradient(135deg,#6b4a8a,#2c2140)',
+    'linear-gradient(135deg,#3a7a72,#1c3a35)',
+    'linear-gradient(135deg,#a15a4a,#3a221c)',
+  ];
+  let gradientIndex = 0;
+
+  function slugify(name){
+    const base = name
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    let slug = base || 'kategoria';
+    let suffix = 1;
+    while (catMeta[slug]){
+      slug = `${base}-${++suffix}`;
+    }
+    return slug;
+  }
+
+  const categoryOverlay = document.getElementById('categoryModalOverlay');
+  const categoryForm = document.getElementById('categoryForm');
+  const catNameInput = document.getElementById('catName');
+  const categoryModalClose = document.getElementById('categoryModalClose');
+  const categoryCancel = document.getElementById('categoryCancel');
+
+  // Icon picker dla nowej kategorii
+  const catIconButtons = document.querySelectorAll('#catIconPicker button');
+  const catEmojiInput = document.getElementById('catEmoji');
+  const catEmojiError = document.getElementById('catEmojiError');
+  let selectedCatEmoji = '🥐';
+
+  function setCatIcon(emoji){
+    selectedCatEmoji = emoji;
+    catIconButtons.forEach(b => b.classList.toggle('active', b.dataset.emoji === emoji));
+  }
+  catIconButtons.forEach(b => b.addEventListener('click', () => {
+    catEmojiInput.value = '';
+    catEmojiError.textContent = '';
+    setCatIcon(b.dataset.emoji);
+  }));
+  catEmojiInput.addEventListener('input', () => {
+    const val = catEmojiInput.value.trim();
+    if (!val){
+      catEmojiError.textContent = '';
+      return;
+    }
+    if (isEmoji(val)){
+      catEmojiError.textContent = '';
+      catIconButtons.forEach(b => b.classList.remove('active'));
+      selectedCatEmoji = val;
+    } else {
+      catEmojiError.textContent = 'To nie wygląda na emotikonę — spróbuj wkleić inną.';
+    }
+  });
+
+  function addCategoryButtonToUI(id, label, emoji){
+    const btn = document.createElement('button');
+    btn.className = 'jar-btn';
+    btn.dataset.filter = id;
+    btn.innerHTML = `<span class="ic">${emoji}</span> ${label}`;
+    bindFilterButton(btn);
+    filterBar.insertBefore(btn, document.getElementById('addCategoryBtn'));
+
+    const option = document.createElement('option');
+    option.value = id;
+    option.textContent = `${emoji} ${label}`;
+    rCategorySelect.appendChild(option);
+  }
+
+  function openCategoryModal(){
+    if (!currentUser){
+      pendingOpenRecipeModal = false;
+      openLoginModal(false);
+      return;
+    }
+    categoryOverlay.classList.add('open');
+    catNameInput.focus();
+    catEmojiInput.value = '';
+    catEmojiError.textContent = '';
+    setCatIcon('🥐');
+  }
+  function closeCategoryModal(){
+    categoryOverlay.classList.remove('open');
+    categoryForm.reset();
+  }
+  document.getElementById('addCategoryBtn').addEventListener('click', openCategoryModal);
+  categoryModalClose.addEventListener('click', closeCategoryModal);
+  categoryCancel.addEventListener('click', closeCategoryModal);
+  categoryOverlay.addEventListener('click', e => { if (e.target === categoryOverlay) closeCategoryModal(); });
+
+  categoryForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!requireSb()) return;
+    const name = catNameInput.value.trim();
+    const emoji = selectedCatEmoji || '🍯';
+    if (!name || !currentUser) return;
+
+    const id = slugify(name);
+    const bg = gradientPalette[gradientIndex % gradientPalette.length];
+    gradientIndex++;
+
+    const submitBtn = categoryForm.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    const { error } = await sb.from('categories').insert({ id, label: name, emoji, bg });
+    submitBtn.disabled = false;
+    if (error){
+      alert('Nie udało się dodać kategorii: ' + error.message);
+      return;
+    }
+
+    catMeta[id] = { label: name, emoji, bg };
+    addCategoryButtonToUI(id, name, emoji);
+
+    closeCategoryModal();
+    toast.textContent = 'Kategoria dodana do klubu 🎉';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2600);
+  });
+
+  // ---------- Init ----------
+  renderAuthArea();
+
+  if (sb){
+    sb.auth.getSession().then(({ data: { session } }) => {
+      currentUser = userFromSession(session);
+      renderAuthArea();
+    });
+
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY'){
+        loginModalSub.textContent = 'Ustaw nowe hasło do swojego konta.';
+        switchAuthTab('recovery');
+        loginOverlay.classList.add('open');
+        return;
+      }
+      currentUser = userFromSession(session);
+      renderAuthArea();
+      renderRecipes();
+    });
+
+    loadCategories();
+    loadRecipes();
+  }
+</script>
+
+</body>
+</html>
