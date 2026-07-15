@@ -855,7 +855,7 @@
       <p class="lede">Miejsce dla mam, które nie udają, że wszystko jest pod kontrolą. Przepisy sprawdzone w boju: szybkie, przyziemne i wystarczająco dobre, żeby nikt nie zapytał, co dzisiaj było na obiad — bo już wie.</p>
       <div class="hero-actions">
         <a href="#przepisy" class="btn btn-gold">Przeglądaj przepisy</a>
-        <button class="btn btn-ghost js-open-login">Dołącz do klubu</button>
+        <button class="btn btn-ghost js-open-login" id="heroJoinBtn">Dołącz do klubu</button>
       </div>
       <p class="hero-note">Żadna mamuśka nie ucierpiała przy tworzeniu tej strony. Prawdopodobnie.</p>
     </div>
@@ -1043,15 +1043,15 @@
     <form id="registerForm">
       <div class="field">
         <label for="regEmail">Adres e-mail</label>
-        <input type="email" id="regEmail" required placeholder="ola@przyklad.pl">
+        <input type="email" id="regEmail" required autocomplete="off">
       </div>
       <div class="field">
-        <label for="regName">Imię (np. Ola)</label>
-        <input type="text" id="regName" required placeholder="Ola">
+        <label for="regName">Imię</label>
+        <input type="text" id="regName" required autocomplete="off">
       </div>
       <div class="field">
-        <label for="regPassword">Hasło</label>
-        <input type="password" id="regPassword" required placeholder="Co najmniej 4 znaki" minlength="4">
+        <label for="regPassword">Hasło (co najmniej 4 znaki)</label>
+        <input type="password" id="regPassword" required minlength="4">
       </div>
       <p class="auth-error" id="registerError"></p>
       <div class="modal-actions">
@@ -1063,7 +1063,7 @@
     <form id="loginForm" style="display:none;">
       <div class="field">
         <label for="loginEmail">Adres e-mail</label>
-        <input type="email" id="loginEmail" required placeholder="ola@przyklad.pl">
+        <input type="email" id="loginEmail" required>
       </div>
       <div class="field">
         <label for="loginPassword">Hasło</label>
@@ -1080,7 +1080,7 @@
     <form id="resetForm" style="display:none;">
       <div class="field">
         <label for="resetEmail">Adres e-mail konta</label>
-        <input type="email" id="resetEmail" required placeholder="ola@przyklad.pl">
+        <input type="email" id="resetEmail" required>
       </div>
       <p class="auth-error" id="resetError"></p>
       <p class="auth-hint">Wyślemy link do zmiany hasła na podany adres e-mail.</p>
@@ -1093,8 +1093,8 @@
 
     <form id="recoveryForm" style="display:none;">
       <div class="field">
-        <label for="recoveryPassword">Nowe hasło</label>
-        <input type="password" id="recoveryPassword" required placeholder="Co najmniej 4 znaki" minlength="4">
+        <label for="recoveryPassword">Nowe hasło (co najmniej 4 znaki)</label>
+        <input type="password" id="recoveryPassword" required minlength="4">
       </div>
       <p class="auth-error" id="recoveryError"></p>
       <p class="auth-hint">Kliknęłaś link z maila — ustaw teraz nowe hasło do konta.</p>
@@ -1345,6 +1345,12 @@
     // Re-bind triggers each time the auth area is rebuilt
     document.querySelectorAll('.js-open-login').forEach(b => b.addEventListener('click', () => openLoginModal(false)));
     document.querySelectorAll('.js-open-modal').forEach(b => b.addEventListener('click', handleAddRecipeClick));
+
+    // Przycisk "Dołącz do klubu" w sekcji hero — niepotrzebny, gdy już się jest w klubie
+    const heroJoinBtn = document.getElementById('heroJoinBtn');
+    if (heroJoinBtn){
+      heroJoinBtn.style.display = currentUser ? 'none' : '';
+    }
   }
 
   async function logout(){
