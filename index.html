@@ -1046,8 +1046,8 @@
         <input type="email" id="regEmail" required placeholder="ola@przyklad.pl">
       </div>
       <div class="field">
-        <label for="regName">Imię (np. Mamuśka Ola)</label>
-        <input type="text" id="regName" required placeholder="Mamuśka Ola">
+        <label for="regName">Imię (np. Ola)</label>
+        <input type="text" id="regName" required placeholder="Ola">
       </div>
       <div class="field">
         <label for="regPassword">Hasło</label>
@@ -1070,7 +1070,6 @@
         <input type="password" id="loginPassword" required placeholder="Twoje hasło">
       </div>
       <p class="auth-error" id="loginError"></p>
-      <p class="auth-hint">Konta z przykładowych przepisów: e-mail autorki (np. ania@toksycznemamuski.pl), hasło <code>mamuska</code>.</p>
       <button type="button" class="link-btn" id="forgotPasswordLink">Nie pamiętasz hasła?</button>
       <div class="modal-actions">
         <button type="button" class="btn btn-ghost" id="loginCancel2">Anuluj</button>
@@ -1257,6 +1256,19 @@
     return div.innerHTML;
   }
 
+  // Zamienia dowolny obiekt błędu na prosty, bezpieczny tekst (nigdy nie zwraca
+  // złożonego obiektu, który mógłby zawierać np. Headers i wysypać się przy logowaniu)
+  function errText(error){
+    try {
+      if (!error) return 'nieznany błąd';
+      if (typeof error === 'string') return error;
+      if (error.message) return String(error.message);
+      return JSON.stringify({ code: error.code, details: error.details, hint: error.hint }) || 'nieznany błąd';
+    } catch (e) {
+      return 'nieznany błąd (nie udało się odczytać szczegółów)';
+    }
+  }
+
   // ---------- Recipe data (ładowane z Supabase) ----------
   let recipes = [];
   let currentFilter = 'all';
@@ -1268,8 +1280,8 @@
       .select('*')
       .order('created_at', { ascending: false });
     if (error){
-      console.error('Błąd wczytywania przepisów:', error);
-      grid.innerHTML = '<p class="empty-state">Nie udało się wczytać przepisów. Sprawdź konfigurację Supabase (SUPABASE_URL / SUPABASE_ANON_KEY) w kodzie strony.</p>';
+      console.error('Błąd wczytywania przepisów: ' + errText(error));
+      grid.innerHTML = `<p class="empty-state">Nie udało się wczytać przepisów: ${escapeHtml(errText(error))}</p>`;
       return;
     }
     recipes = data.map(r => ({
@@ -1292,7 +1304,7 @@
     if (!sb) return;
     const { data, error } = await sb.from('categories').select('*');
     if (error){
-      console.error('Błąd wczytywania kategorii:', error);
+      console.error('Błąd wczytywania kategorii: ' + errText(error));
       return;
     }
     data.forEach(c => {
@@ -1433,9 +1445,13 @@
     e.preventDefault();
     if (!requireSb()) return;
     const email = regEmailInput.value.trim().toLowerCase();
-    const name = regNameInput.value.trim();
+    const rawName = regNameInput.value.trim();
     const password = regPasswordInput.value;
-    if (!email || !name || !password) return;
+    if (!email || !rawName || !password) return;
+
+    // Każda zalogowana osoba dostaje przedrostek "Mamuśka" automatycznie —
+    // nie trzeba go wpisywać samodzielnie w formularzu.
+    const name = /^mamuśka\b/i.test(rawName) ? rawName : `Mamuśka ${rawName}`;
 
     const submitBtn = registerForm.querySelector('button[type=submit]');
     submitBtn.disabled = true;
@@ -1446,7 +1462,7 @@
     submitBtn.disabled = false;
 
     if (error){
-      registerError.textContent = error.message;
+      registerError.textContent = errText(error);
       return;
     }
     if (data.session){
@@ -1492,7 +1508,7 @@
     submitBtn.disabled = false;
 
     if (error){
-      resetError.textContent = error.message;
+      resetError.textContent = errText(error);
       return;
     }
     switchAuthTab('login');
@@ -1512,7 +1528,7 @@
     submitBtn.disabled = false;
 
     if (error){
-      recoveryError.textContent = error.message;
+      recoveryError.textContent = errText(error);
       return;
     }
     closeLoginModal();
@@ -1746,7 +1762,7 @@
       const { error } = await sb.from('recipes').delete().eq('id', r.id);
       detailDeleteBtn.disabled = false;
       if (error){
-        deleteConfirmText.textContent = 'Nie udało się usunąć: ' + error.message;
+        deleteConfirmText.textContent = 'Nie udało się usunąć: ' + errText(error);
         return;
       }
       await loadRecipes();
@@ -1806,14 +1822,14 @@
         .update({ title, cat, time, description: desc, sass, emoji, ingredients, instructions })
         .eq('id', editingId);
       submitBtn.disabled = false;
-      if (error){ alert('Nie udało się zapisać zmian: ' + error.message); return; }
+      if (error){ alert('Nie udało się zapisać zmian: ' + errText(error)); return; }
       toast.textContent = 'Przepis zaktualizowany ✎';
     } else {
       const { error } = await sb
         .from('recipes')
         .insert({ cat, title, description: desc, time, sass, emoji, ingredients, instructions, author_name: currentUser.name, author_id: currentUser.id });
       submitBtn.disabled = false;
-      if (error){ alert('Nie udało się dodać przepisu: ' + error.message); return; }
+      if (error){ alert('Nie udało się dodać przepisu: ' + errText(error)); return; }
       toast.textContent = 'Przepis dodany do klubu 🎉';
     }
 
@@ -1993,7 +2009,7 @@
     const { error } = await sb.from('categories').insert({ id, label: name, emoji, bg });
     submitBtn.disabled = false;
     if (error){
-      alert('Nie udało się dodać kategorii: ' + error.message);
+      alert('Nie udało się dodać kategorii: ' + errText(error));
       return;
     }
 
